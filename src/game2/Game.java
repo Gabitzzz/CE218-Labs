@@ -13,13 +13,15 @@ import static game2.Constants.setFullScreenDimensions;
 
 public class Game {
     public static final int N_INITIAL_ASTEROIDS = 5;
+    public static final int N_INITIAL_GARNAGES = 5;
     public static final int INITIAL_LIVES = 5;
     public static final int INITIAL_SAFETY_DURATION = 5000; // millisecs
     boolean shipIsSafe; // within initial safety period?
     public List<GameObject> objects;
+    public List<GameObject> garbage_obj;
     Ship ship;
     Keys ctrl;
-    int score, lives, level, remainingAsteroids;
+    int score, lives, level, remainingAsteroids, remainingGarbages;
     View view;
     boolean ended;
     long gameStartTime;  // start time for whole game
@@ -31,16 +33,20 @@ public class Game {
         SoundManager.play(SoundManager.thrust);
         view = new View(this);
         objects = new ArrayList<GameObject>();
+        garbage_obj = new ArrayList<GameObject>();
         for (int i = 0; i < N_INITIAL_ASTEROIDS; i++) {
-
             objects.add(new Asteroid());
-
         }
+        for (int i = 0; i < N_INITIAL_GARNAGES; i++) {
+            garbage_obj.add(new Garbage());
+        }
+
         ctrl = new Keys();
         ship = new Ship(ctrl);
         objects.add(ship);
         score = 0;
         remainingAsteroids = N_INITIAL_ASTEROIDS;
+        remainingGarbages = N_INITIAL_GARNAGES;
         lives = INITIAL_LIVES;
         level = 1;
         ended = false;
@@ -107,6 +113,9 @@ public class Game {
             objects.add(new Asteroid());
 
         }
+
+
+
         remainingAsteroids = N_INITIAL_ASTEROIDS + (level - 1) * 5;
         ship.reset();
         objects.add(ship);
